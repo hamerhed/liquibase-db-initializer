@@ -1,6 +1,6 @@
 FROM postgres:10.6
 
-MAINTAINER hamerhed
+MAINTAINER hamerhed@o2.pl
 
 ADD ./create_users_and_dbs.sh  /docker-entrypoint-initdb.d/create_users_and_dbs.sh
 
