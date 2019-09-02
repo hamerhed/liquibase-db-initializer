@@ -1,0 +1,25 @@
+version: '3'
+services:
+    repo:
+        build: ./repo
+        hostname: repository
+        restart: always
+        environment:
+             - DB_USERNAMES=test1,test2
+             - DB_PASSWORDS=pass,pass
+             - DB_DATABASES=test1,test2
+        ports:
+            - 5434:5432
+        volumes:
+            - ~/hamerhed_volumes/liquibase-db-initializer/dev/postgres-data:/var/lib/postgresql/data
+            
+    pgadmin:
+        image: crunchydata/crunchy-pgadmin4:centos7-10.4-2.0.0
+        environment:
+            - PGADMIN_SETUP_EMAIL=a@wp.pl
+            - PGADMIN_SETUP_PASSWORD=a
+            - SERVER_PORT=5050        
+        ports:
+            - 5050:5050
+        volumes:
+            - ~/hamerhed_volumes/liquibase-db-initializer/dev/repo-init/pgadmin:/pgdata
