@@ -10,4 +10,5 @@
 					org.postgresql.Driver \
 					./changesets/test2/master.xml \
 					test2 \
-					pass
+					pass				
+			
