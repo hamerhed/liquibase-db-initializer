@@ -1,0 +1,48 @@
+version: '3'
+services:
+    repo:
+        build: ./repo
+        hostname: repository
+        restart: always
+        environment:
+             - DB_USERNAMES=test1,test2
+             - DB_PASSWORDS=pass,pass
+             - DB_DATABASES=test1,test2
+        ports:
+            - 5434:5432
+        volumes:
+            - ~/hamerhed_volumes/liquibase-db-initializer/test/postgres-data:/var/lib/postgresql/data
+
+    repository-init:
+        image: insension-repository-init:latest
+        environment:
+            #formating of the property key see
+            #https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-relaxed-binding
+            - DB1_URL=jdbc:postgresql://repo:5432/test1
+            - DB1_DRIVER=org.postgresql.Driver
+            - DB1_CHANGESET=./changesets/test1/master.xml
+            - DB1_USERNAME=test1
+            - DB1_PASSWORD=pass
+            - DB2_URL=jdbc:postgresql://repo:5432/test2
+            - DB2_DRIVER=org.postgresql.Driver
+            - DB2_CHANGESET=./changesets/test2/master.xml
+            - DB2_USERNAME=test2
+            - DB2_PASSWORD=pass
+            - WAIT_FOR_SERVICE=repo:5432
+            - WAIT_FOR_SERVICE_TIMEOUT=0
+            - DISABLE_INIT=0
+        depends_on:
+            - repo
+        volumes:
+            - ./../changesets:/home/user/changesets
+
+    pgadmin:
+        image: crunchydata/crunchy-pgadmin4:centos7-10.4-2.0.0
+        environment:
+            - PGADMIN_SETUP_EMAIL=a@wp.pl
+            - PGADMIN_SETUP_PASSWORD=a
+            - SERVER_PORT=5050        
+        ports:
+            - 5050:5050
+        volumes:
+            - ~/hamerhed_volumes/liquibase-db-initializer/test/pgadmin:/pgdata
