@@ -8,23 +8,23 @@
 	<property name="now" value="now()" dbms="postgresql"/>
 	
 	<changeSet author="hamerhed" id="1">
-		<insert tableName="event_source" >
+		<insert tableName="test_table">
 		 <column name="id">89832d09-f534-476f-a1bd-970bc197a1ef</column>
 		  <column name="creation_date">${now}</column>
 		 <column name="payload">{aaa}</column>
 		 <column name="version">1</column>
 		</insert>
-		<rollback>delete from event_source where id='89832d09-f534-476f-a1bd-970bc197a1ef'</rollback>
+		<rollback>delete from test_table where id='89832d09-f534-476f-a1bd-970bc197a1ef'</rollback>
 	</changeSet>
 	
 	<changeSet author="hamerhed" id="2">
-		<insert tableName="event_source" >
+		<insert tableName="test_table">
 		 <column name="id">89832d09-f534-476f-a1bd-970bc197a1ef</column>
 		 <column name="creation_date">${now}</column>
 		 <column name="payload">{}</column>
 		 <column name="version">1</column>
 		</insert>
-		<rollback>delete from event_source where id='89832d09-f534-476f-a1bd-970bc197a1ef'</rollback>
+		<rollback>delete from test_table where id='89832d09-f534-476f-a1bd-970bc197a1ef'</rollback>
 	</changeSet>
 	
 	
